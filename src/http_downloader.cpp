@@ -8,22 +8,34 @@
  */
 #include "http_downloader.hpp"
 #include <curl/curl.h>
-// #include <curl/curlbuild.h>
 #include <curl/easy.h>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
-	std::string data((const char *)ptr, (size_t)size * nmemb);
+  std::string data((const char *)ptr, (size_t)size * nmemb);
   *((std::stringstream *)stream) << data << std::endl;
   return size * nmemb;
 }
 
-HTTPDownloader::HTTPDownloader() { curl = curl_easy_init(); }
+HTTPDownloader::HTTPDownloader() : curl(nullptr) { curl = curl_easy_init(); }
 
-HTTPDownloader::~HTTPDownloader() { curl_easy_cleanup(curl); }
+HTTPDownloader::~HTTPDownloader() {
+  if (curl != nullptr)
+    curl_easy_cleanup(curl);
+}
 
 std::string HTTPDownloader::download(const std::string &url) {
+  if (curl == nullptr) {
+    std::cout << __FUNCTION__ << ": Invalid curl pointer.\n";
+    return {};
+  }
+
+	if (url.empty()) {
+		std::cout << __FUNCTION__ << ": Empty url provided.\n";
+		return {};
+	}
   curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
   /* example.com is redirected, so we tell libcurl to follow redirection */
   curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
@@ -37,8 +49,9 @@ std::string HTTPDownloader::download(const std::string &url) {
   CURLcode res = curl_easy_perform(curl);
   /* Check for errors */
   if (res != CURLE_OK) {
-    fprintf(stderr, "curl_easy_perform() failed: %s\n",
-            curl_easy_strerror(res));
+    std::cout << __FUNCTION__ << ": curl_easy_perform() failed:\n\t"
+              << curl_easy_strerror(res);
+		return {};
   }
   return out.str();
 }
