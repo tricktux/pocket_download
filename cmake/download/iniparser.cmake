@@ -11,6 +11,7 @@ ExternalProject_Add(
 	CONFIGURE_COMMAND ""
 	BUILD_COMMAND make
 	INSTALL_COMMAND ""
+	TEST_COMMAND make check
 	COMMAND  ${CMAKE_COMMAND} -E copy_if_different "<SOURCE_DIR>/src/iniparser.h"
 		"${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/iniparser/inc"
 	COMMAND  ${CMAKE_COMMAND} -E copy_if_different "<SOURCE_DIR>/src/dictionary.h"
