@@ -78,12 +78,12 @@ SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-strict-aliasing")
 SET(CMAKE_CXX_FLAGS_DEBUG
 	"${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -Wunused -Werror")
 
-# if(NOT CMAKE_BUILD_TYPE)
-	# set(CMAKE_BUILD_TYPE "Release" CACHE STRING
-		# "Choose the type of build, options are: Debug Release
-		# RelWithDebInfo MinSizeRel."
-		# FORCE)
-# endif(NOT CMAKE_BUILD_TYPE)
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
+		"Choose the type of build, options are: Debug Release
+		RelWithDebInfo MinSizeRel."
+		FORCE)
+endif(NOT CMAKE_BUILD_TYPE)
 
 # Specify output directories.
 set(EXECUTABLE_OUTPUT_PATH "${PROJECT_BINARY_DIR}/bin")
@@ -94,13 +94,14 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
-find_package(RapidJSON REQUIRED)
+# find_package(RapidJSON REQUIRED)
 
-find_package(GLog REQUIRED)
+# find_package(GLog REQUIRED)
 
-find_package(GTest REQUIRED)
+# find_package(GTest REQUIRED)
 
-find_package(CURL REQUIRED)
+hunter_add_package(CURL)
+find_package(CURL CONFIG REQUIRED)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/download/iniparser.cmake")
 
