@@ -6,7 +6,7 @@
 # Created:        Tue Mar 05 2019 06:13
 # Last Modified:  Tue Mar 05 2019 06:13
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.11)
 
 # Set ProjectName
 project(pocket_download)
@@ -94,6 +94,8 @@ find_package(GLog REQUIRED)
 find_package(GTest REQUIRED)
 
 find_package(CURL REQUIRED)
+
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/download/fetch.cmake")
 
 add_subdirectory("src")
 add_subdirectory("docs")
