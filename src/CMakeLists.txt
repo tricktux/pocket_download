@@ -2,6 +2,7 @@
 file(GLOB SOURCES "*.cpp")
 
 include_directories(${CMAKE_SOURCE_DIR}/inc)
+include_directories(${CMAKE_SOURCE_DIR}/thirdparty/iniparser/inc)
 
 if (CURL_FOUND)
 	include_directories(SYSTEM "${CURL_INCLUDE_DIRS}")
@@ -25,7 +26,8 @@ endif ()
 # Set ExecutableName.
 add_executable(pocket_download ${SOURCES})
 
-target_link_libraries(pocket_download curlpp)
+target_link_libraries(pocket_download
+	${CMAKE_SOURCE_DIR}/thirdparty/iniparser/lib/libiniparser.a)
 
 if (CURL_FOUND)
 	target_link_libraries(pocket_download ${CURL_LIBRARIES})

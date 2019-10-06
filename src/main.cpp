@@ -18,9 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http:www.gnu.org/licenses/>.
 
-#include "http_downloader.hpp"
 #include <iostream>
 #include <string>
+
+#include "http_downloader.hpp"
+#include "iniparser.h"
 
 int main() {
   std::string url{
@@ -28,6 +30,8 @@ int main() {
   HTTPDownloader downloader;
   std::string content = downloader.download(url);
   std::cout << content << std::endl;
+	auto ini = iniparser_load("pocket.ini");
 
+	iniparser_freedict(ini);
   return 0;
 }

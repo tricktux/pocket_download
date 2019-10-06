@@ -95,7 +95,7 @@ find_package(GTest REQUIRED)
 
 find_package(CURL REQUIRED)
 
-include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/download/fetch.cmake")
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/download/iniparser.cmake")
 
 add_subdirectory("src")
 add_subdirectory("docs")

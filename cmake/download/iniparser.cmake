@@ -4,7 +4,7 @@ include(ExternalProject)
 ExternalProject_Add(
 	iniparser
 	GIT_REPOSITORY https://github.com/ndevilla/iniparser
-	GIT_TAG				 v4.1
+	# GIT_TAG				 v4.1
 	GIT_SHALLOW		 1
 	GIT_PROGRESS	 1
 	BUILD_IN_SOURCE 1
