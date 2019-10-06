@@ -20,13 +20,3 @@ ExternalProject_Add(
 	COMMAND  ${CMAKE_COMMAND} -E copy_if_different "<SOURCE_DIR>/libiniparser.so.1"
 		"${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/iniparser/lib"
 	)
-
-# FetchContent_MakeAvailable(iniparser)
-
-# FetchContent_GetProperties(iniparser)
-	# if(NOT iniparser_POPULATED)
-	# FetchContent_Populate(iniparser)
-
-	# # Build the C++ version of iniparser as well
-	# add_subdirectory(${reproc_INCLUDE_DIR})
-# endif()
