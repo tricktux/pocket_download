@@ -8,6 +8,13 @@
 
 cmake_minimum_required(VERSION 3.11)
 
+# Hunter
+#		https://docs.hunter.sh/en/latest/quick-start/boost-components.html
+# List of packages supported
+#		https://docs.hunter.sh/en/latest/genindex.html#C
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/hunter/HunterGate.cmake")
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/hunter/HunterVersion.cmake")
+
 # Set ProjectName
 project(pocket_download)
 
