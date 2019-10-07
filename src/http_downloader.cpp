@@ -7,22 +7,31 @@
  * Published under CC0 1.0 Universal (public domain)
  */
 
+#include "http_downloader.hpp"
 #include <iostream>
 #include <sstream>
-#include "http_downloader.hpp"
 
-template <typename T>
-void HTTPDownloader::set_option(CURLoption opt, T type) {
-	if (curl == nullptr)
+void HTTPDownloader::set_option(CURLoption opt, int val) {
+  if (curl == nullptr)
+    return;
+
+  curl_easy_setopt(curl, opt, val);
+}
+
+void HTTPDownloader::set_option(CURLoption opt, const char *val) {
+  if (curl == nullptr)
+    return;
+
+	if (val == nullptr)
 		return;
 
-	curl_easy_setopt(curl, opt, type);
+  curl_easy_setopt(curl, opt, val);
 }
 
 void HTTPDownloader::set_header(const std::vector<std::string> &str_headers) {
-	for (auto &&header : str_headers) {
-		headers = curl_slist_append(headers, header.c_str());
-	}
+  for (auto &&header : str_headers) {
+    headers = curl_slist_append(headers, header.c_str());
+  }
 }
 
 size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
@@ -31,23 +40,16 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
   return size * nmemb;
 }
 
-HTTPDownloader::HTTPDownloader() : curl(nullptr) { curl = curl_easy_init(); }
-
-HTTPDownloader::~HTTPDownloader() {
-  if (curl != nullptr)
-    curl_easy_cleanup(curl);
-}
-
 std::string HTTPDownloader::download(const std::string &url) {
   if (curl == nullptr) {
     std::cout << __FUNCTION__ << ": Invalid curl pointer.\n";
     return {};
   }
 
-	if (url.empty()) {
-		std::cout << __FUNCTION__ << ": Empty url provided.\n";
-		return {};
-	}
+  if (url.empty()) {
+    std::cout << __FUNCTION__ << ": Empty url provided.\n";
+    return {};
+  }
   curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
   /* example.com is redirected, so we tell libcurl to follow redirection */
   curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
@@ -63,7 +65,7 @@ std::string HTTPDownloader::download(const std::string &url) {
   if (res != CURLE_OK) {
     std::cout << __FUNCTION__ << ": curl_easy_perform() failed:\n\t"
               << curl_easy_strerror(res);
-		return {};
+    return {};
   }
   return out.str();
 }
