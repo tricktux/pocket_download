@@ -6,12 +6,28 @@
  * Written by Uli Köhler (techoverflow.net)
  * Published under CC0 1.0 Universal (public domain)
  */
-#include "http_downloader.hpp"
+
 #include <curl/curl.h>
 #include <curl/easy.h>
 #include <iostream>
 #include <sstream>
-#include <string>
+
+#include "http_downloader.hpp"
+
+
+template <typename T>
+void set_post(CURLoption, opt, T type) {
+	if (curl == nullptr)
+		return;
+
+	curl_easy_setopt(curl, opt, type);
+}
+
+void set_header(const std::vector<std::string> &str_headers) {
+	for (auto &&header : str_headers) {
+		headers = curl_slist_append(headers, header.c_str());
+	}
+}
 
 size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
   std::string data((const char *)ptr, (size_t)size * nmemb);

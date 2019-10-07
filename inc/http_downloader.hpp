@@ -10,6 +10,8 @@
 #define HTTPDOWNLOADER_HPP
 
 #include <string>
+#include <string_view>
+#include <vector>
 
 /**
  * A non-threadsafe simple libcURL-easy based HTTP downloader
@@ -23,10 +25,13 @@ public:
    * @param url The URL to download
    * @return The download result
    */
+	void set_header(const std::vector<std::string> &headers);
+	void set_post(std::string_view postfields);
   std::string download(const std::string &url);
 
 private:
   void *curl;
+	struct curl_slist *headers = NULL; // init to NULL is important
 };
 
 #endif /* HTTPDOWNLOADER_HPP */

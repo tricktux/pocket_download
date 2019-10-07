@@ -27,11 +27,15 @@
 int main() {
   std::string url{
       "https://api.sunrise-sunset.org/json?lat=27.972572&lng=-82.796745"};
+  std::vector<std::string> header{"Accept: application/json",
+                                  "Content-Type: application/json",
+                                  "charsets: utf-8"};
   HTTPDownloader downloader;
+	downloader.set_header(header);
   std::string content = downloader.download(url);
   std::cout << content << std::endl;
-	auto ini = iniparser_load("pocket.ini");
+  auto ini = iniparser_load("pocket.ini");
 
-	iniparser_freedict(ini);
+  iniparser_freedict(ini);
   return 0;
 }
