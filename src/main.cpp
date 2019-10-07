@@ -25,27 +25,28 @@
 #include "iniparser.h"
 
 int main() {
-	dictionary* ini = iniparser_load("pocket.ini");
-	if (!ini) {
-		std::cout << "Bad ini" << std::endl;
-		return 1;
-	}
+  dictionary *ini = iniparser_load("pocket.ini");
+  if (!ini) {
+    std::cout << "Bad ini" << std::endl;
+    return 1;
+  }
 
-	std::string url = iniparser_getstring(ini, "api:url", NULL);
-	std::cout << "[ini]: url = " << url << std::endl;
-	iniparser_freedict(ini);
-	return 0;
+  std::string url = iniparser_getstring(ini, "api:url", NULL);
+  std::cout << "[ini]: url = " << url << std::endl;
+  iniparser_freedict(ini);
+  return 0;
   std::vector<std::string> header{
       "X-Accept: application/json",
       "Content-Type: application/json; charset=UTF8"};
-  // std::string postfields{"{\"consumer_key\":\"1234-abcd1234abcd1234abcd1234\",
-		// \"redirect_uri\":\"pocketapp1234:authorizationFinished\"}"};
+  std::string postfields{"{\"consumer_key\":\"1234-abcd1234abcd1234abcd1234\","
+		"\"redirect_uri\":\"pocketapp1234:authorizationFinished\"}"};
 
   HTTPDownloader downloader;
   downloader.set_header(header);
-  // downloader.set_option(CURLOPT_POSTFIELDS, postfields.c_str());
-  // downloader.set_option(CURLOPT_POSTFIELDSIZE, postfields.length());
+	downloader.set_option(CURLOPT_POSTFIELDS, postfields.c_str());
+	downloader.set_option(CURLOPT_POSTFIELDSIZE, postfields.length());
   downloader.set_option(CURLOPT_POST, 1);
+	downloader.set_option(CURLOPT_VERBOSE, 1);
   std::string content = downloader.download(url);
   std::cout << content << std::endl;
   return 0;
