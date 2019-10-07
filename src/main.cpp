@@ -25,21 +25,28 @@
 #include "iniparser.h"
 
 int main() {
-  std::string url{"https://api.sunrise-sunset.org/"};
+	dictionary* ini = iniparser_load("pocket.ini");
+	if (!ini) {
+		std::cout << "Bad ini" << std::endl;
+		return 1;
+	}
+
+	std::string url = iniparser_getstring(ini, "api:url", NULL);
+	std::cout << "[ini]: url = " << url << std::endl;
+	iniparser_freedict(ini);
+	return 0;
   std::vector<std::string> header{
-      "Accept: application/json",
+      "X-Accept: application/json",
       "Content-Type: application/json; charset=UTF8"};
-  std::string postfields{"json?lat=27.972572&lng=-82.796745"};
+  // std::string postfields{"{\"consumer_key\":\"1234-abcd1234abcd1234abcd1234\",
+		// \"redirect_uri\":\"pocketapp1234:authorizationFinished\"}"};
 
   HTTPDownloader downloader;
   downloader.set_header(header);
-  downloader.set_option(CURLOPT_POSTFIELDS, postfields.c_str());
-  downloader.set_option(CURLOPT_POSTFIELDSIZE, postfields.length());
+  // downloader.set_option(CURLOPT_POSTFIELDS, postfields.c_str());
+  // downloader.set_option(CURLOPT_POSTFIELDSIZE, postfields.length());
   downloader.set_option(CURLOPT_POST, 1);
   std::string content = downloader.download(url);
   std::cout << content << std::endl;
-  auto ini = iniparser_load("pocket.ini");
-
-  iniparser_freedict(ini);
   return 0;
 }
