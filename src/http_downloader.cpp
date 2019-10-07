@@ -7,23 +7,19 @@
  * Published under CC0 1.0 Universal (public domain)
  */
 
-#include <curl/curl.h>
-#include <curl/easy.h>
 #include <iostream>
 #include <sstream>
-
 #include "http_downloader.hpp"
 
-
 template <typename T>
-void set_post(CURLoption, opt, T type) {
+void HTTPDownloader::set_option(CURLoption opt, T type) {
 	if (curl == nullptr)
 		return;
 
 	curl_easy_setopt(curl, opt, type);
 }
 
-void set_header(const std::vector<std::string> &str_headers) {
+void HTTPDownloader::set_header(const std::vector<std::string> &str_headers) {
 	for (auto &&header : str_headers) {
 		headers = curl_slist_append(headers, header.c_str());
 	}

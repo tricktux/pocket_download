@@ -12,6 +12,8 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <curl/curl.h>
+#include <curl/easy.h>
 
 /**
  * A non-threadsafe simple libcURL-easy based HTTP downloader
@@ -26,7 +28,8 @@ public:
    * @return The download result
    */
 	void set_header(const std::vector<std::string> &headers);
-	void set_post(std::string_view postfields);
+	template <typename T>
+	void set_option(CURLoption opt, T type);
   std::string download(const std::string &url);
 
 private:
