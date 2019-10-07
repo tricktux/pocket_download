@@ -25,17 +25,17 @@
 #include "iniparser.h"
 
 int main() {
-  std::string url{
-      "https://api.sunrise-sunset.org/"};
-  std::vector<std::string> header{"Accept: application/json",
-                                  "Content-Type: application/json",
-                                  "charsets: utf-8"};
-	std::string postfields{"json?lat=27.972572&lng=-82.796745"};
+  std::string url{"https://api.sunrise-sunset.org/"};
+  std::vector<std::string> header{
+      "Accept: application/json",
+      "Content-Type: application/json; charset=UTF8"};
+  std::string postfields{"json?lat=27.972572&lng=-82.796745"};
+
   HTTPDownloader downloader;
-	downloader.set_header(header);
-	downloader.set_option(CURLOPT_POSTFIELDS, postfields.c_str());
-	downloader.set_option(CURLOPT_POSTFIELDSIZE, postfields.length());
-	downloader.set_option(CURLOPT_POST, 1);
+  downloader.set_header(header);
+  downloader.set_option(CURLOPT_POSTFIELDS, postfields.c_str());
+  downloader.set_option(CURLOPT_POSTFIELDSIZE, postfields.length());
+  downloader.set_option(CURLOPT_POST, 1);
   std::string content = downloader.download(url);
   std::cout << content << std::endl;
   auto ini = iniparser_load("pocket.ini");
